@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/open_cms?serverTimezone=UTC&useLegacyDatetimeCode=false
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: Hikari
+  jpa:
+    open-in-view: false
+    properties:
+      javax:
+        persistence:
+          shared-cache:
+            mode: ENABLE_SELECTIVE
+      hibernate:
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        show_sql: true
+        generate_statistics: true
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 100000
+          fetch_size: 10000
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 3
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: INFO
+        stat: INFO
+

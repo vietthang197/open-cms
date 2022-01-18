@@ -1,9 +1,10 @@
 package vn.neo.controller;
 
-import org.casbin.jcasbin.main.Enforcer;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vn.neo.exception.BusinessException;
+import vn.neo.services.DataService;
 
 /**
  * @author thanglv on 1/18/2022
@@ -13,14 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class HomeController {
 
-    private final Enforcer enforcer;
+    private final DataService dataService;
 
-    public HomeController(Enforcer enforcer) {
-        this.enforcer = enforcer;
+    public HomeController(DataService dataService) {
+        this.dataService = dataService;
     }
 
     @GetMapping
-    public boolean test() {
-        return enforcer.enforce("p", "c");
+    public int test() throws BusinessException, InterruptedException {
+        return dataService.testNow(getSession());
+    }
+
+    private String getSession() throws InterruptedException {
+        Thread.sleep(10_000);
+        return "xxx";
     }
 }

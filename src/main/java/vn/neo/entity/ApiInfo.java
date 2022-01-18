@@ -1,9 +1,6 @@
 package vn.neo.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
@@ -14,6 +11,7 @@ import java.io.Serializable;
 @Table(name = "api_info")
 public class ApiInfo extends AbstractEntity implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long apiId;
     private String name;
     @Column(name = "url", nullable = false)
@@ -22,6 +20,13 @@ public class ApiInfo extends AbstractEntity implements Serializable {
     private String method;
 
     public ApiInfo() {
+    }
+
+    public ApiInfo(Long apiId, String name, String url, String method) {
+        this.apiId = apiId;
+        this.name = name;
+        this.url = url;
+        this.method = method;
     }
 
     public Long getApiId() {

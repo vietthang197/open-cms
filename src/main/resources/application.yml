@@ -31,6 +31,16 @@ spring:
     hibernate:
       ddl-auto: update
       use-new-id-generator-mappings: true
+casbin:
+  enableCasbin: true
+  useSyncedEnforcer: false
+  autoSave: true
+  storeType: jdbc
+  tableName: casbin_rule
+  initializeSchema: create
+  model: classpath:casbin/model.conf
+  useDefaultModelIfModelNotSetting: true
+  enableWatcher: false
 logging:
   level:
     org:

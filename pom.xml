@@ -130,6 +130,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.casbin/casbin-spring-boot-starter -->
+        <dependency>
+            <groupId>org.casbin</groupId>
+            <artifactId>casbin-spring-boot-starter</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

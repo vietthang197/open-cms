@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/font-awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+</head>
+<body>
+<div class="border border-danger m-5">
+    <div class="m-2">
+        <form class="row" action="/" method="post">
+            <div class="col-5">
+                <input name="en" type="text" class="form-control" placeholder="English" aria-label="English">
+            </div>
+            <div class="col-6">
+                <input name="vi" type="text" class="form-control" placeholder="Việt Nam" aria-label="Việt Nam">
+            </div>
+            <div class="col-1">
+                <button type="submit" class="btn btn-md btn-primary">
+                    <i class="fal fa-check-circle"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="border border-success m-5 mt-3">
+    <div class="bd-example m-2">
+        <form class="row" action="/" method="get">
+            <div class="col">
+                <label for="searchEn">English</label>
+                <input id="searchEn" name="searchEn" type="text" class="form-control" placeholder="English" aria-label="English">
+            </div>
+            <div class="col">
+                <label for="searchVi">Tiếng Việt</label>
+                <input id="searchVi" name="searchVi" type="text" class="form-control" placeholder="Việt Nam" aria-label="Việt Nam">
+            </div>
+            <div class="col">
+                <label for="fromDate">From date</label>
+                <input id="fromDate" placeholder="from date" name="fromDate" type="date" class="form-control">
+            </div>
+            <div class="col">
+                <label for="toDate">To date</label>
+                <input id="toDate" placeholder="to date" name="toDate" type="date" class="form-control">
+            </div>
+            <div class="col">
+                <label for="btnSub">Submit</label>
+                <button id="btnSub" type="submit" class="form-control btn btn-md btn-primary">
+                    <i class="fal fa-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive m-5">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>
+                    English
+                </td>
+                <td>
+                    Việt Nam
+                </td>
+                <td>
+                    Hành động
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${words}">
+                <td th:text="${item.en}"></td>
+                <td th:text="${item.vi}"></td>
+                <td>
+                    <form action="/delete-word" method="post">
+                        <input type="hidden" name="id" th:value="${item.id}">
+                        <button type="submit" class="btn btn-danger btn-md text-light"><i class="far fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="/jquery/jquery-3.6.0.min.js"></script>
+<script src="/font-awesome/js/pro.min.js"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>

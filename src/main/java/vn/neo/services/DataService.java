@@ -1,14 +1,18 @@
 package vn.neo.services;
 
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
-import vn.neo.exception.BusinessException;
+import vn.neo.entity.Words;
+
+import java.text.ParseException;
+import java.util.List;
 
 /**
  * @author thanglv on 1/18/2022
  * @project open-cms
  */
 public interface DataService {
-    @Retryable(value = BusinessException.class, maxAttempts = 100, backoff = @Backoff(value = 2000))
-    int testNow(String session) throws BusinessException;
+    void saveWords(Words words);
+
+    List<Words> findAllWords(String searchEn, String searchVi, String fromDate, String toDate) throws ParseException;
+
+    void deleteWord(Long id);
 }

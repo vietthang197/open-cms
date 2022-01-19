@@ -1,59 +1,53 @@
 package vn.neo.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import vn.neo.exception.BusinessException;
+import org.springframework.web.bind.annotation.RequestParam;
+import vn.neo.entity.Words;
 import vn.neo.services.DataService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Tuple;
-import javax.persistence.TupleElement;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
-import java.util.stream.Collectors;
 
 /**
  * @author thanglv on 1/18/2022
  * @project open-cms
  */
-@RestController
+@Controller
 @RequestMapping("/")
 public class HomeController {
 
     private final DataService dataService;
-    private final EntityManagerFactory entityManagerFactory;
 
-    public HomeController(DataService dataService, EntityManagerFactory entityManagerFactory) {
+    public HomeController(DataService dataService) {
         this.dataService = dataService;
-        this.entityManagerFactory = entityManagerFactory;
     }
 
     @GetMapping
-    public List<Map<String, Object>> test() throws BusinessException, InterruptedException {
-        EntityManager em = null;
-        try {
-
-            em = this.entityManagerFactory.createEntityManager();
-            return (List<Map<String, Object>>) em.createNativeQuery("select * from api_info", Tuple.class).setFirstResult(1).setMaxResults(1).getResultStream().map(item -> {
-                Tuple tuple = (Tuple) item;
-                Map<String, Object> row = new WeakHashMap<>();
-                List<TupleElement<?>> tupleElements = tuple.getElements();
-                tupleElements.forEach(cell -> {
-                    row.put(cell.getAlias(), ((Tuple) item).get(cell.getAlias()));
-                });
-                return row;
-            }).collect(Collectors.toList());
-        } finally {
-            if (em != null)
-                em.close();
-        }
+    public String index(@RequestParam(required = false) String searchEn, @RequestParam(required = false) String searchVi, @RequestParam(required = false) String fromDate, @RequestParam(required = false) String toDate, Model model) throws ParseException {
+        List<Words> words = dataService.findAllWords(searchEn, searchVi, fromDate, toDate);
+        model.addAttribute("words", words);
+        return "index";
     }
 
-    private String getSession() throws InterruptedException, BusinessException {
-        throw new BusinessException("abc");
-//        return "xxx";
+    @PostMapping
+    public String postindex(String en, String vi) {
+        Words words = new Words();
+        words.setEn(en.toLowerCase());
+        words.setVi(vi.toLowerCase());
+        words.setCreatedDate(new Date());
+        dataService.saveWords(words);
+        return "redirect:/";
     }
+
+    @PostMapping("/delete-word")
+    public String deleteindex(Long id) {
+        dataService.deleteWord(id);
+        return "redirect:/";
+    }
+
 }

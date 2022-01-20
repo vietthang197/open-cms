@@ -55,6 +55,7 @@ public class DataServiceImpl implements DataService {
             sql.append(" AND créated_date <= ?");
             valueSearch.add(sdf.parse(toDate));
         }
+        sql.append(" ORDER BY created_date desc");
         EntityManager em = null;
         try {
             em = emf.createEntityManager();
